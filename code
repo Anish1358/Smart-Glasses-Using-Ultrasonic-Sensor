@@ -1,0 +1,69 @@
+#include <NewPing.h>//library for ultrasonic sensors 
+#define TRIGGER_PIN   12 // Arduino pin tied to trigger pin on the ultrasonic sensor.
+#define ECHO_PIN      11// Arduino pin tied to echo pin on the ultrasonic sensor.
+#define MAX_DISTANCE 150 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
+
+void setup() {
+  pinMode(7, OUTPUT);
+  pinMode(6, OUTPUT);
+   pinMode(5, OUTPUT);//output pin bana di
+  pinMode(4, OUTPUT);
+ 
+  Serial.begin(9600);//baudrate matlab itni speed sensor or ardiuno comunicate karenge 
+}
+
+void loop()
+
+{
+  int dist = (sonar.ping_cm());//distance varaible isme store hoga
+
+  Serial.print("object at distance: ");//serial monitor basically print KAREGA  kitna distance
+  Serial.print(sonar.ping_cm()); // Send ping, get distance in cm and print result (0 = outside set distance range)
+  Serial.println("cm");//cm me output
+
+  if (dist > 0 && dist <= 50)//dis define
+  { 
+digitalWrite(7, LOW);//-ve pin for controlling buzzer or light
+ digitalWrite(6, HIGH);  //+ve pin // 6 and 7 buzzer 
+digitalWrite(5, LOW);// led //5 4 led
+ digitalWrite(4, HIGH);
+     delay(50);//50 ms ke liye run hoga
+  
+       }
+      if (dist > 50 && dist <=95 )
+  { 
+    digitalWrite(4, HIGH); // 500 ms ke liye run power de di
+    digitalWrite(6, HIGH);
+     digitalWrite(5, LOW);
+     digitalWrite(7, LOW);
+    delay(500);
+    digitalWrite(7, LOW);//100 ms ke liye power cut kar di 
+    digitalWrite(6, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(4, LOW);
+       delay(100);
+
+
+       }
+         if (dist > 95 && dist <=125 )
+  { 
+   digitalWrite(4, HIGH);
+    digitalWrite(6, HIGH);
+      digitalWrite(5, LOW);
+    digitalWrite(7, LOW);
+    delay(100);
+digitalWrite(7, LOW);
+    digitalWrite(6, LOW);
+     digitalWrite(5, LOW);
+    digitalWrite(4, LOW);
+       delay(400);
+
+    
+  }
+  else
+  { digitalWrite(7, LOW);
+    digitalWrite(6, LOW);
+  digitalWrite(5, LOW);
+    digitalWrite(4, LOW); }
+}
